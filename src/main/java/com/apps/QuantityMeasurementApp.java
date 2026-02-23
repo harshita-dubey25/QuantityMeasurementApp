@@ -9,31 +9,21 @@ public class QuantityMeasurementApp {
 			return l1.equals(l2);
 		}
 
-		// Static method to demonstrate Feet equality
-		public static void demonstrateFeetEquality() {
-			Quantity feet1 = new Quantity(1.0, Unit.FEET);
-			Quantity feet2 = new Quantity(1.0, Unit.FEET);
-			System.out.println("Feet equality: " + demonstrateLengthEquality(feet1, feet2));
-		}
-
-		// Static method to demonstrate Inches equality
-		public static void demonstrateInchesEquality() {
-			Quantity inch1 = new Quantity(1.0, Unit.INCHES);
-			Quantity inch2 = new Quantity(1.0, Unit.INCHES);
-			System.out.println("Inches equality: " + demonstrateLengthEquality(inch1, inch2));
-		}
-
-		// Static method to demonstrate Feet and Inches comparison
-		public static void demonstrateFeetInchesComparison() {
-			Quantity feet1 = new Quantity(1.0, Unit.FEET);
-			Quantity inch12 = new Quantity(12.0, Unit.INCHES);
-			System.out.println("Feet vs Inches equality: " + demonstrateLengthEquality(feet1, inch12));
+		public static boolean demonstrateLengthComparison(double value1, Unit unit1, 
+				                                          double value2, Unit unit2) {
+				Quantity l1 = new Quantity(value1, unit1);
+				Quantity l2 = new Quantity(value2, unit2);
+				boolean result = l1.equals(l2);
+				System.out.println("Are lengths equal? " + result);
+				return result;
 		}
 
 		// Main method
 		public static void main(String[] args) {
-			demonstrateFeetEquality();
-			demonstrateInchesEquality();
-			demonstrateFeetInchesComparison();
+			demonstrateLengthComparison(1.0, Unit.FEET, 12.0, Unit.INCHES);
+			demonstrateLengthComparison(1.0, Unit.YARD, 36.0, Unit.INCHES);
+			demonstrateLengthComparison(100.0, Unit.CENTIMETERS, 39.3701,Unit.INCHES);
+			demonstrateLengthComparison(3.0,Unit.FEET, 1.0, Unit.YARD);
+			demonstrateLengthComparison(30.48, Unit.CENTIMETERS, 1.0,Unit.FEET);
 		}
 }
