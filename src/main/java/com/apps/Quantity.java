@@ -16,9 +16,8 @@ public class Quantity {
 		this.value = value;
 		this.unit = unit;
 	}
-
 	private double convertToBaseUnit() {
-		return value * unit.getConversionFactor();
+		return unit.convertToBaseUnit(value);
 	}
 
 	// Private helper method to compare two Lengths
@@ -81,26 +80,26 @@ public class Quantity {
 		double sumInTargetUnit = convertFromBaseToTargetUnit(sumInBase, this.unit);
 		return new Quantity(sumInTargetUnit, this.unit);
 	}
-	
+
 	public Quantity add(Quantity other, Unit targetUnit) {
-	    if (other == null) {
-	        throw new IllegalArgumentException("Operand cannot be null");
-	    }
-	    if (targetUnit == null) {
-	        throw new IllegalArgumentException("Target unit cannot be null");
-	    }
-	    if(!Double.isFinite(this.value) || !Double.isFinite(other.value)) {
-	    	throw new IllegalArgumentException("Values must be a finite number");
-	    }
- 	    return addAndConvert(other, targetUnit);
+		if (other == null) {
+			throw new IllegalArgumentException("Operand cannot be null");
+		}
+		if (targetUnit == null) {
+			throw new IllegalArgumentException("Target unit cannot be null");
+		}
+		if(!Double.isFinite(this.value) || !Double.isFinite(other.value)) {
+			throw new IllegalArgumentException("Values must be a finite number");
+		}
+		return addAndConvert(other, targetUnit);
 	}
-	
+
 	private Quantity addAndConvert(Quantity other, Unit targetUnit) {
-	    double sumInBase = this.convertToBaseUnit() + other.convertToBaseUnit();
-	    double sumInTargetUnit = convertFromBaseToTargetUnit(sumInBase, targetUnit);
-	    return new Quantity(sumInTargetUnit, targetUnit);
+		double sumInBase = this.convertToBaseUnit() + other.convertToBaseUnit();
+		double sumInTargetUnit = convertFromBaseToTargetUnit(sumInBase, targetUnit);
+		return new Quantity(sumInTargetUnit, targetUnit);
 	}
-	
+
 	// Helper: convert from base unit (inches) to target unit
 	private double convertFromBaseToTargetUnit(double lengthInInches, Unit targetUnit) {
 		if (targetUnit == null) {
@@ -110,6 +109,11 @@ public class Quantity {
 		return Math.round(convertedValue * 1000000.0) / 1000000.0;
 	}
 
+	@Override
+	public int hashCode() {
+		long normalized = Math.round(convertToBaseUnit() / EPSILON);
+		return Long.hashCode(normalized);
+	}
 	public static void main(String[] args) {
 		Quantity length1 = new Quantity(1.0, Unit.FEET);
 		Quantity length2 = new Quantity(12.0, Unit.INCHES);
@@ -140,30 +144,30 @@ public class Quantity {
 		System.out.println("Add 5 Feet + (-2 Feet) = " + new Quantity(5.0, Unit.FEET).add(new Quantity(-2.0, Unit.FEET)));
 		System.out.println("Add Large Values: " + new Quantity(1e6, Unit.FEET).add(new Quantity(1e6, Unit.FEET)));
 		System.out.println("Add Small Values: " + new Quantity(0.001, Unit.FEET).add(new Quantity(0.002, Unit.FEET)));
-		
+
 		Quantity result = new Quantity(1.0, Unit.FEET).add(new Quantity(12.0, Unit.INCHES), Unit.FEET);
-	    System.out.println("Add (1.0 FEET, 12.0 INCHES, FEET) = " + result);
+		System.out.println("Add (1.0 FEET, 12.0 INCHES, FEET) = " + result);
 
-	    result = new Quantity(1.0, Unit.FEET).add(new Quantity(12.0, Unit.INCHES), Unit.INCHES);
-	    System.out.println("Add (1.0 FEET, 12.0 INCHES, INCHES) = " + result);
+		result = new Quantity(1.0, Unit.FEET).add(new Quantity(12.0, Unit.INCHES), Unit.INCHES);
+		System.out.println("Add (1.0 FEET, 12.0 INCHES, INCHES) = " + result);
 
-	    result = new Quantity(1.0, Unit.FEET).add(new Quantity(12.0, Unit.INCHES), Unit.YARD);
-	    System.out.println("Add (1.0 FEET, 12.0 INCHES, YARDS) = " + result);
+		result = new Quantity(1.0, Unit.FEET).add(new Quantity(12.0, Unit.INCHES), Unit.YARD);
+		System.out.println("Add (1.0 FEET, 12.0 INCHES, YARDS) = " + result);
 
-	    result = new Quantity(1.0, Unit.YARD).add(new Quantity(3.0, Unit.FEET), Unit.YARD);
-	    System.out.println("Add (1.0 YARDS, 3.0 FEET, YARDS) = " + result);
+		result = new Quantity(1.0, Unit.YARD).add(new Quantity(3.0, Unit.FEET), Unit.YARD);
+		System.out.println("Add (1.0 YARDS, 3.0 FEET, YARDS) = " + result);
 
-	    result = new Quantity(36.0, Unit.INCHES).add(new Quantity(1.0, Unit.YARD), Unit.FEET);
-	    System.out.println("Add (36.0 INCHES, 1.0 YARDS, FEET) = " + result);
+		result = new Quantity(36.0, Unit.INCHES).add(new Quantity(1.0, Unit.YARD), Unit.FEET);
+		System.out.println("Add (36.0 INCHES, 1.0 YARDS, FEET) = " + result);
 
-	    result = new Quantity(2.54, Unit.CENTIMETERS).add(new Quantity(1.0, Unit.INCHES), Unit.CENTIMETERS);
-	    System.out.println("Add (2.54 CM, 1.0 INCH, CM) = " + result);
+		result = new Quantity(2.54, Unit.CENTIMETERS).add(new Quantity(1.0, Unit.INCHES), Unit.CENTIMETERS);
+		System.out.println("Add (2.54 CM, 1.0 INCH, CM) = " + result);
 
-	    result = new Quantity(5.0, Unit.FEET).add(new Quantity(0.0, Unit.INCHES), Unit.YARD);
-	    System.out.println("Add (5.0 FEET, 0.0 INCHES, YARDS) = " + result);
+		result = new Quantity(5.0, Unit.FEET).add(new Quantity(0.0, Unit.INCHES), Unit.YARD);
+		System.out.println("Add (5.0 FEET, 0.0 INCHES, YARDS) = " + result);
 
-	    result = new Quantity(5.0, Unit.FEET).add(new Quantity(-2.0, Unit.FEET), Unit.INCHES);
-	    System.out.println("Add (5.0 FEET, -2.0 FEET, INCHES) = " + result);
+		result = new Quantity(5.0, Unit.FEET).add(new Quantity(-2.0, Unit.FEET), Unit.INCHES);
+		System.out.println("Add (5.0 FEET, -2.0 FEET, INCHES) = " + result);
 	}
 
 }
