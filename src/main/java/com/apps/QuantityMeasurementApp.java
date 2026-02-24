@@ -37,6 +37,13 @@ public class QuantityMeasurementApp {
 		    System.out.println(length1 + " + " + length2 + " = " + sum);
 		    return sum;
 		}
+		
+		// Static method to demonstrate addition of two Length objects into target unit
+	    public static Quantity demonstrateLengthAddition(Quantity length1, Quantity length2, Unit targetUnit) {
+	    	Quantity sum = length1.add(length2, targetUnit);
+	        System.out.println(length1 + " + " + length2 + " in " + targetUnit + " = " + sum);
+	        return sum;
+	    }
 		// Main method	
 		public static void main(String[] args) {
 			demonstrateLengthComparison(1.0, Unit.FEET, 12.0, Unit.INCHES);
@@ -81,5 +88,52 @@ public class QuantityMeasurementApp {
 					new Quantity(5.0, Unit.FEET),
 					new Quantity(-2.0, Unit.FEET)
 				);
+				demonstrateLengthAddition(
+					    new Quantity(1.0, Unit.FEET),
+					    new Quantity(12.0, Unit.INCHES),
+					    Unit.FEET
+					);
+					
+					demonstrateLengthAddition(
+						new Quantity(1.0, Unit.FEET),                                  
+						new Quantity(12.0, Unit.INCHES),
+						Unit.INCHES
+					);
+					
+					demonstrateLengthAddition(
+						new Quantity(1.0, Unit.FEET),
+				        new Quantity(12.0, Unit.INCHES),
+					    Unit.YARD
+					);
+					
+					demonstrateLengthAddition(
+					    new Quantity(1.0, Unit.YARD),
+						new Quantity(3.0, Unit.FEET),
+					    Unit.YARD
+					); 
+					
+					demonstrateLengthAddition(
+						new Quantity(36.0, Unit.INCHES),
+						new Quantity(1.0, Unit.YARD),
+						Unit.FEET
+					);
+					
+					demonstrateLengthAddition(
+						new Quantity(2.54, Unit.CENTIMETERS),
+						new Quantity(1.0, Unit.INCHES),
+						Unit.CENTIMETERS
+					);
+					
+					demonstrateLengthAddition(
+						new Quantity(5.0, Unit.FEET),
+						new Quantity(0.0, Unit.INCHES),
+						Unit.YARD
+					);
+					
+					demonstrateLengthAddition(
+						new Quantity(5.0, Unit.FEET),
+						new Quantity(-2.0, Unit.FEET),
+						Unit.INCHES
+					);
 		}
 }

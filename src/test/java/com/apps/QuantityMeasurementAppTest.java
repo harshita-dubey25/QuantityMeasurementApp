@@ -374,4 +374,152 @@ public class QuantityMeasurementAppTest {
         );
         assertTrue(result.equals(new Quantity(0.003, Unit.FEET)));
     }
+    
+    @Test
+    public void testAddition_ExplicitTargetUnit_Feet() {
+        Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+	        new Quantity(1.0, Unit.FEET),
+	        new Quantity(12.0, Unit.INCHES),
+	        Unit.FEET
+        );
+        assertEquals(new Quantity(2.0, Unit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Inches() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1.0, Unit.FEET),
+            new Quantity(12.0, Unit.INCHES),
+            Unit.INCHES
+        );
+        assertEquals(new Quantity(24.0, Unit.INCHES), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Yards() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1.0, Unit.FEET),
+            new Quantity(12.0, Unit.INCHES),
+            Unit.YARD
+        );
+        assertTrue(result.equals(new Quantity(0.666667, Unit.YARD)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Centimeters() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1.0, Unit.INCHES),
+            new Quantity(1.0, Unit.INCHES),
+            Unit.CENTIMETERS
+        );
+        assertTrue(result.equals(new Quantity(5.079998, Unit.CENTIMETERS)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_SameAsFirstOperand() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(2.0, Unit.YARD),
+            new Quantity(3.0, Unit.FEET),
+            Unit.YARD
+        );
+        assertEquals(new Quantity(3.0, Unit.YARD), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_SameAsSecondOperand() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(2.0, Unit.YARD),
+            new Quantity(3.0, Unit.FEET),
+            Unit.FEET
+        );
+        assertEquals(new Quantity(9.0, Unit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Commutativity() {
+    	Quantity a = new Quantity(1.0, Unit.FEET);
+    	Quantity b = new Quantity(12.0, Unit.INCHES);
+    	Quantity result1 = QuantityMeasurementApp.demonstrateLengthAddition(a, b, Unit.YARD);
+    	Quantity result2 = QuantityMeasurementApp.demonstrateLengthAddition(b, a, Unit.YARD);
+        assertTrue(result1.equals(result2));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_WithZero() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(5.0, Unit.FEET),
+            new Quantity(0.0, Unit.INCHES),
+            Unit.YARD
+        );
+        assertTrue(result.equals(new Quantity(1.666667, Unit.YARD)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_NegativeValues() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(5.0, Unit.FEET),
+            new Quantity(-2.0, Unit.FEET),
+            Unit.INCHES
+        );
+        assertEquals(new Quantity(36.0, Unit.INCHES), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_NullTargetUnit() {
+        assertThrows(
+    		IllegalArgumentException.class, 
+    		() -> QuantityMeasurementApp.demonstrateLengthAddition(
+                new Quantity(1.0, Unit.FEET),
+                new Quantity(12.0, Unit.INCHES),
+                null
+            )
+		);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_LargeToSmallScale() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1000.0, Unit.FEET),
+            new Quantity(500.0, Unit.FEET),
+            Unit.INCHES
+        );
+        assertEquals(new Quantity(18000.0, Unit.INCHES), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_SmallToLargeScale() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(12.0, Unit.INCHES),
+            new Quantity(12.0, Unit.INCHES),
+            Unit.YARD
+        );
+        assertTrue(result.equals(new Quantity(0.666667, Unit.YARD)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_AllUnitCombinations() {
+    	Quantity result1 = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1.0, Unit.FEET),
+            new Quantity(1.0, Unit.YARD),
+            Unit.INCHES
+        );
+        assertTrue(new Quantity(48.0, Unit.INCHES).equals(result1));
+
+        Quantity result2 = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(2.54, Unit.CENTIMETERS),
+            new Quantity(1.0, Unit.INCHES),
+            Unit.FEET
+        );
+        assertTrue(result2.equals(new Quantity(0.166667, Unit.FEET)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_PrecisionTolerance() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(0.1, Unit.FEET),
+            new Quantity(0.2, Unit.FEET),
+            Unit.INCHES
+        );
+        assertTrue(result.equals(new Quantity(3.6, Unit.INCHES)));
+    }
 }
