@@ -71,6 +71,26 @@ public class Quantity {
 	    double convertedValue = baseValue / target.getConversionFactor();
 	    return Math.round(convertedValue * 100.0) / 100.0;
 	}
+	
+	// Add two lengths, result in unit of first operand
+	public Quantity add(Quantity thatLength) {
+		if (thatLength == null) {
+		        throw new IllegalArgumentException("Operand cannot be null");
+		}
+		double sumInBase = this.convertToBaseUnit() + thatLength.convertToBaseUnit();
+	    double sumInTargetUnit = convertFromBaseToTargetUnit(sumInBase, this.unit);
+		return new Quantity(sumInTargetUnit, this.unit);
+		}
+
+		// Helper: convert from base unit (inches) to target unit
+	private double convertFromBaseToTargetUnit(double lengthInInches, Unit targetUnit) {
+		    if (targetUnit == null) {
+		        throw new IllegalArgumentException("Target unit cannot be null");
+		    }
+		    double convertedValue = lengthInInches / targetUnit.getConversionFactor();
+		    return Math.round(convertedValue * 1000000.0) / 1000000.0;
+		}
+		
 	public static void main(String[] args) {
 		Quantity length1 = new Quantity(1.0, Unit.FEET);
 		Quantity length2 = new Quantity(12.0, Unit.INCHES);
@@ -91,5 +111,16 @@ public class Quantity {
 		System.out.println("Convert 72 Inches to Yards: " + new Quantity(72.0, Unit.INCHES).convertTo(Unit.YARD));
 		System.out.println("Convert 0 Feet to Inches: " + new Quantity(0.0, Unit.FEET).convertTo(Unit.INCHES));
 		System.out.println("Convert -1 Foot to Inches: " + new Quantity(-1.0, Unit.FEET).convertTo(Unit.INCHES));
+		
+		System.out.println("Add 1 Foot + 12 Inches = " + length1.add(length2));
+		System.out.println("Add 12 Inches + 1 Foot = " + length2.add(length1));
+		System.out.println("Add 1 Yard + 3 Feet = " + length3.add(new Quantity(3.0, Unit.FEET)));
+		System.out.println("Add 36 Inches + 1 Yard = " + length4.add(length3));
+		System.out.println("Add 2.54 cm + 1 Inch = " + new Quantity(2.54, Unit.CENTIMETERS).add(new Quantity(1.0, Unit.INCHES))); 
+		System.out.println("Add 5 Feet + 0 Inches = " + new Quantity(5.0, Unit.FEET).add(new Quantity(0.0, Unit.INCHES)));
+		System.out.println("Add 5 Feet + (-2 Feet) = " + new Quantity(5.0, Unit.FEET).add(new Quantity(-2.0, Unit.FEET)));
+		System.out.println("Add Large Values: " + new Quantity(1e6, Unit.FEET).add(new Quantity(1e6, Unit.FEET)));
+		System.out.println("Add Small Values: " + new Quantity(0.001, Unit.FEET).add(new Quantity(0.002, Unit.FEET)));
 	}
+	
 }

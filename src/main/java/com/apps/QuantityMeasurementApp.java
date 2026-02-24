@@ -30,6 +30,13 @@ public class QuantityMeasurementApp {
 				System.out.println(length + " -> " + converted); 
 				return converted; 
 		}
+		
+		// Static method to demonstrate addition of two Length objects
+		public static Quantity demonstrateLengthAddition(Quantity length1, Quantity length2) {
+		    Quantity sum = length1.add(length2); // use Length.add() from UC6
+		    System.out.println(length1 + " + " + length2 + " = " + sum);
+		    return sum;
+		}
 		// Main method	
 		public static void main(String[] args) {
 			demonstrateLengthComparison(1.0, Unit.FEET, 12.0, Unit.INCHES);
@@ -44,5 +51,35 @@ public class QuantityMeasurementApp {
 			demonstrateLengthConversion(30.48, Unit.CENTIMETERS, Unit.FEET); 
 			
 			demonstrateLengthConversion(new Quantity(-1.0, Unit.FEET), Unit.INCHES);
+			
+			demonstrateLengthAddition(
+					new Quantity(1.0, Unit.FEET),
+					new Quantity(12.0, Unit.INCHES)
+				);
+				
+				demonstrateLengthAddition(
+					new Quantity(12.0, Unit.INCHES),
+					new Quantity(1.0, Unit.FEET)
+				);
+				
+				demonstrateLengthAddition(
+					new Quantity(1.0, Unit.YARD),
+					new Quantity(3.0, Unit.FEET)
+				);
+				
+				demonstrateLengthAddition(
+					new Quantity(2.54, Unit.CENTIMETERS),
+					new Quantity(1.0, Unit.INCHES)
+				);
+				
+				demonstrateLengthAddition(
+					new Quantity(5.0, Unit.FEET),
+					new Quantity(0.0, Unit.INCHES)
+				);
+				
+				demonstrateLengthAddition(
+					new Quantity(5.0, Unit.FEET),
+					new Quantity(-2.0, Unit.FEET)
+				);
 		}
 }

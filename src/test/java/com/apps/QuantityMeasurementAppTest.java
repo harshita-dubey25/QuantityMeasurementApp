@@ -269,4 +269,109 @@ public class QuantityMeasurementAppTest {
     	Quantity expected = new Quantity(5.0, Unit.FEET);
         assertEquals(expected, result);
     }
+    
+    @Test
+    public void testAddition_SameUnit_FeetPlusFeet() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1.0, Unit.FEET),
+            new Quantity(2.0, Unit.FEET)
+        );
+        assertEquals(new Quantity(3.0, Unit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_SameUnit_InchPlusInch() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(6.0, Unit.INCHES),
+            new Quantity(6.0, Unit.INCHES)
+        );
+        assertEquals(new Quantity(12.0, Unit.INCHES), result);
+    }
+
+    @Test
+    public void testAddition_CrossUnit_FeetPlusInches() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1.0, Unit.FEET),
+            new Quantity(12.0, Unit.INCHES)
+        );
+        assertEquals(new Quantity(2.0, Unit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_CrossUnit_InchPlusFeet() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(12.0, Unit.INCHES),
+            new Quantity(1.0, Unit.FEET)
+        );
+        assertEquals(new Quantity(24.0, Unit.INCHES), result);
+    }
+
+    @Test
+    public void testAddition_CrossUnit_YardPlusFeet() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1.0, Unit.YARD),
+            new Quantity(3.0, Unit.FEET)
+        );
+        assertEquals(new Quantity(2.0, Unit.YARD), result);
+    }
+
+    @Test
+    public void testAddition_CrossUnit_CentimeterPlusInch() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(2.54, Unit.CENTIMETERS),
+            new Quantity(1.0, Unit.INCHES)
+        );
+        assertTrue(result.equals(new Quantity(5.08, Unit.CENTIMETERS)));
+    }
+
+    @Test
+    public void testAddition_Commutativity() {
+    	Quantity a = new Quantity(1.0, Unit.FEET);
+    	Quantity b = new Quantity(12.0, Unit.INCHES);
+        assertEquals(a.add(b), b.add(a).convertTo(Unit.FEET));
+    }
+
+    @Test
+    public void testAddition_WithZero() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(5.0, Unit.FEET),
+            new Quantity(0.0, Unit.INCHES)
+        );
+        assertEquals(new Quantity(5.0, Unit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_NegativeValues() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(5.0, Unit.FEET),
+            new Quantity(-2.0, Unit.FEET)
+        );
+        assertEquals(new Quantity (3.0, Unit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_NullSecondOperand() {
+        assertThrows(
+    		IllegalArgumentException.class, 
+    		() -> QuantityMeasurementApp.demonstrateLengthAddition(new Quantity(1.0,Unit.FEET), null)
+		);
+    }
+
+    @Test
+    public void testAddition_LargeValues() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(1e6, Unit.FEET),
+            new Quantity(1e6, Unit.FEET)
+        );
+        assertEquals(new Quantity(2e6, Unit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_SmallValues() {
+        Quantity result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new Quantity(0.001, Unit.FEET),
+            new Quantity(0.002, Unit.FEET)
+        );
+        assertTrue(result.equals(new Quantity(0.003, Unit.FEET)));
+    }
 }
