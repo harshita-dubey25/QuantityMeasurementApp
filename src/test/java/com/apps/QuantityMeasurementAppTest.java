@@ -171,4 +171,102 @@ public class QuantityMeasurementAppTest {
 		);
 		assertTrue(result);
 	}
+	
+	@Test
+    public void testConversion_FeetToInches() {
+        Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(1.0, Unit.FEET, Unit.INCHES);
+        Quantity expected = new Quantity(12.0, Unit.INCHES);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testConversion_InchesToFeet() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(24.0, Unit.INCHES, Unit.FEET);
+    	Quantity expected = new Quantity(2.0, Unit.FEET);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testConversion_YardsToInches() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(1.0, Unit.YARD, Unit.INCHES);
+    	Quantity expected = new Quantity(36.0, Unit.INCHES);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testConversion_InchesToYards() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(72.0, Unit.INCHES, Unit.YARD);
+    	Quantity expected = new Quantity(2.0, Unit.YARD);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testConversion_CentimetersToInches() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(2.54, Unit.CENTIMETERS, Unit.INCHES);
+    	Quantity expected = new Quantity(1.0, Unit.INCHES);
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void testConversion_FeetToYards() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(6.0, Unit.FEET, Unit.YARD);
+    	Quantity expected = new Quantity(2.0, Unit.YARD);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testConversion_RoundTrip_PreservesValue() {
+    	Quantity original = new Quantity(3.0, Unit.FEET);
+    	Quantity converted = original.convertTo(Unit.INCHES).convertTo(Unit.FEET);
+        assertTrue(original.equals(converted));
+    }
+
+    @Test
+    public void testConversion_ZeroValue() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(0.0, Unit.FEET, Unit.INCHES);
+    	Quantity expected = new Quantity(0.0, Unit.INCHES);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testConversion_NegativeValue() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(-1.0, Unit.FEET, Unit.INCHES);
+    	Quantity expected = new Quantity(-12.0, Unit.INCHES);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testConversion_InvalidUnit_Throws() {
+        assertThrows(
+    		IllegalArgumentException.class, 
+    		() -> QuantityMeasurementApp.demonstrateLengthConversion(1.0, null, Unit.INCHES)
+    	);
+    }
+
+    @Test
+    public void testConversion_NaNOrInfinite_Throws() {
+        assertThrows(
+    		IllegalArgumentException.class, 
+    		() -> new Quantity(Double.NaN, Unit.FEET)
+    	);
+        assertThrows(
+    		IllegalArgumentException.class, 
+    		() -> new Quantity(Double.POSITIVE_INFINITY,Unit.INCHES)
+		);
+    }
+
+    @Test
+    public void testConversion_PrecisionTolerance() {
+        double result = Quantity.convert(30.48, Unit.CENTIMETERS, Unit.FEET);
+        double expected = 1.0;
+        assertTrue(Math.abs(result - expected) < 1e-6, "Conversion should be within precision tolerance");
+    }
+
+    
+    @Test
+    public void testConversion_SameUnit() {
+    	Quantity result = QuantityMeasurementApp.demonstrateLengthConversion(5.0, Unit.FEET, Unit.FEET);
+    	Quantity expected = new Quantity(5.0, Unit.FEET);
+        assertEquals(expected, result);
+    }
 }

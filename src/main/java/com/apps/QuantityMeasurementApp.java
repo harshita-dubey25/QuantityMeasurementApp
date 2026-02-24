@@ -17,13 +17,32 @@ public class QuantityMeasurementApp {
 				System.out.println("Are lengths equal? " + result);
 				return result;
 		}
+		
+		public static Quantity demonstrateLengthConversion(double value, Unit fromUnit, Unit toUnit) { 
+				Quantity source = new Quantity(value, fromUnit); 
+				Quantity converted = source.convertTo(toUnit); 
+				System.out.println(source + " -> " + converted); 
+				return converted; 
+		}
 
-		// Main method
+		public static Quantity demonstrateLengthConversion(Quantity length, Unit toUnit) { 
+				Quantity converted = length.convertTo(toUnit); 
+				System.out.println(length + " -> " + converted); 
+				return converted; 
+		}
+		// Main method	
 		public static void main(String[] args) {
 			demonstrateLengthComparison(1.0, Unit.FEET, 12.0, Unit.INCHES);
 			demonstrateLengthComparison(1.0, Unit.YARD, 36.0, Unit.INCHES);
 			demonstrateLengthComparison(100.0, Unit.CENTIMETERS, 39.3701,Unit.INCHES);
 			demonstrateLengthComparison(3.0,Unit.FEET, 1.0, Unit.YARD);
 			demonstrateLengthComparison(30.48, Unit.CENTIMETERS, 1.0,Unit.FEET);
+			
+			demonstrateLengthConversion(1.0, Unit.FEET, Unit.INCHES); 
+			demonstrateLengthConversion(3.0, Unit.YARD, Unit.FEET); 
+			demonstrateLengthConversion(36.0, Unit.INCHES, Unit.YARD); 
+			demonstrateLengthConversion(30.48, Unit.CENTIMETERS, Unit.FEET); 
+			
+			demonstrateLengthConversion(new Quantity(-1.0, Unit.FEET), Unit.INCHES);
 		}
 }
