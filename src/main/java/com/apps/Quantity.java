@@ -1,4 +1,4 @@
-package com.apps;
+package com.apps.quantitymeasurement;
 
 public final class Quantity<U extends IMeasurable> {
 
