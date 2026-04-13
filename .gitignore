@@ -1,45 +1,33 @@
-# Ignore everything
-*
-
-# Allow src folder
-!src/
-!src/**
-
-# Allow pom.xml
-!pom.xml
-
-# Allow this .gitignore file
-!.gitignore
-
-
-# -----------------------------
-# Maven
-# -----------------------------
+HELP.md
 target/
-*.log
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# -----------------------------
-# IntelliJ IDEA
-# -----------------------------
-.idea/
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
 *.iml
 *.ipr
-*.iws
 
-# -----------------------------
-# Eclipse
-# -----------------------------
-.project
-.classpath
-.settings/
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# -----------------------------
-# VS Code
-# -----------------------------
+### VS Code ###
 .vscode/
-
-# -----------------------------
-# OS Files
-# -----------------------------
-.DS_Store
-Thumbs.db
