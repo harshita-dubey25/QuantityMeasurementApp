@@ -1,9 +1,4 @@
-# Ignore everything
-*
 
-# Allow src folder
-!src/
-!src/**
 
 # Allow pom.xml
 !pom.xml
